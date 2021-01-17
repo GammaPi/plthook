@@ -350,7 +350,7 @@ static int plthook_open_executable(plthook_t **plthook_out)
 
 static int plthook_open_shared_library(plthook_t **plthook_out, const char *filename)
 {
-    void *hndl = dlopen(filename, RTLD_LAZY | RTLD_NOLOAD);
+    void *hndl = dlopen(filename, RTLD_NOW);
 #if defined __ANDROID__ || defined __UCLIBC__
     int rv;
 #else
@@ -371,7 +371,6 @@ static int plthook_open_shared_library(plthook_t **plthook_out, const char *file
         dlclose(hndl);
         return PLTHOOK_FILE_NOT_FOUND;
     }
-    dlclose(hndl);
     return plthook_open_real(plthook_out, lmap);
 #endif
 }
